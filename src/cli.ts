@@ -20,6 +20,6 @@ if(!texture) {
     process.exit(0);
 }
 
-texture.export(output);
+texture.export(output, true);
 
 console.log(`OK`);

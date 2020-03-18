@@ -18,7 +18,7 @@ export class TXD extends RWFile {
 
     }
 
-    export(path: string) {
+    export(path: string, lowerCase: boolean = false) {
         if (!this.textureDictionary) {
             return false;
         }
@@ -28,7 +28,11 @@ export class TXD extends RWFile {
                 if (!fs.existsSync(`${path}`)) {
                     fs.mkdirSync(`${path}`, {recursive: true});
                 }
-                native.raster.pack().pipe(fs.createWriteStream(`${path}/${native.struct.name}.png`))
+                let fileName = native.struct.name;
+                if (lowerCase) {
+                    fileName = fileName.toLowerCase();
+                }
+                native.raster.pack().pipe(fs.createWriteStream(`${path}/${fileName}.png`))
             }
         })
     }
