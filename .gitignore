@@ -1,7 +1,4 @@
-junk/*
-export
-export2/*
 node_modules
-import/*
-anim/*
-package-lock.json
+input/
+output/
+dist/

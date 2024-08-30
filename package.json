@@ -4,12 +4,13 @@
   "description": "RenderWare Utilities for JavaScript Applications",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "author": "Martin Uhlir",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^12.0.4"
+    "@types/node": "^12.0.4",
+    "@types/pngjs": "^6.0.5"
   },
   "dependencies": {
     "dxt-js": "0.0.3",

@@ -1,8 +1,6 @@
-import {Chunk, ChunkType} from "../chunk.class";
+import { Chunk, ChunkType } from "../chunk.class";
 const dxt = require('dxt-js');
-
-
-const PNG = require("pngjs").PNG;
+import { PNG } from 'pngjs';
 
 export enum RasterFormat {
     FORMAT_1555 = 0x100,
@@ -66,7 +64,7 @@ export class TextureNativeStruct extends Chunk {
             }
         }
 
-        this.rasterFormat = this.buffer.readUInt32LE(84) & 0xfff;
+        this.rasterFormat = this.buffer.readUInt32LE(84) & 0xfFF;
         this.d3dFormat = this.buffer.readUInt32LE(88);
         this.width = this.buffer.readUInt16LE(92);
         this.height = this.buffer.readUInt16LE(94);
@@ -90,7 +88,7 @@ export class TextureNativeStruct extends Chunk {
 export class TextureNative extends Chunk {
 
     struct: TextureNativeStruct;
-    raster: any;
+    raster?: PNG;
 
     constructor(buffer: Buffer, parent?: any) {
         super(buffer, parent);
@@ -135,7 +133,7 @@ export class TextureNative extends Chunk {
         const png = new PNG({
             width: this.struct.width,
             height: this.struct.height,
-            filterType: -1,
+            filterType: 0,
             inputHasAlpha: false
         });
 
@@ -151,7 +149,8 @@ export class TextureNative extends Chunk {
         const png = new PNG({
             width: this.struct.width,
             height: this.struct.height,
-            filterType: -1
+            filterType: -1,
+            inputHasAlpha: this.struct.alpha
         });
 
         const deco = dxt.decompress(buffer, this.struct.width, this.struct.height, dxt.flags.DXT1);
@@ -165,7 +164,8 @@ export class TextureNative extends Chunk {
         const png = new PNG({
             width: this.struct.width,
             height: this.struct.height,
-            filterType: -1
+            filterType: -1,
+            inputHasAlpha: this.struct.alpha
         });
 
         for (let x = 0; x < this.struct.width; x++) {
@@ -188,7 +188,8 @@ export class TextureNative extends Chunk {
         const png = new PNG({
             width: this.struct.width,
             height: this.struct.height,
-            filterType: -1
+            filterType: -1,
+            inputHasAlpha: this.struct.alpha
         });
 
         for (let x = 0; x < this.struct.width; x++) {
@@ -211,10 +212,11 @@ export class TextureNative extends Chunk {
         const png = new PNG({
             width: this.struct.width,
             height: this.struct.height,
-            filterType: -1
+            filterType: -1,
+            inputHasAlpha: this.struct.alpha
         });
 
-        const deco = dxt.decompress(buffer, this.struct.width, this.struct.height, dxt.flags.DXT3);
+        const deco = dxt.decompress(buffer, this.struct.width, this.struct.height, dxt.flags.DXT5);
         png.data = Buffer.from(deco);
 
         this.raster = png;
